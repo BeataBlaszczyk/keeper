@@ -44,8 +44,27 @@ footer p {
   padding: 10px;
   width: 240px;
   margin: 16px;
-  float: left;
+  flex-grow: 1;
 }
+
+#notes:last-child{
+  flex-grow: 0;
+}
+
+#notes{
+  display: inline-flex;
+  flex-wrap: wrap;
+ 
+}
+
+@media only screen and (max-width: 575px) { 
+  .note {
+    
+    width: 45%;
+    
+  }
+}
+
 .note h1 {
   font-size: 1.1em;
   margin-bottom: 6px;
@@ -67,6 +86,7 @@ footer p {
   height: 36px;
   cursor: pointer;
   outline: none;
+  background-color: white;
 }
 
 form.create-note {
