@@ -47,8 +47,9 @@ footer p {
   flex-grow: 1;
 }
 
-#notes:last-child{
-  flex-grow: 0;
+#notes:last-child::after{
+  content: "";
+  flex-grow: 110000000;
 }
 
 #notes{
