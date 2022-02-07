@@ -1,90 +1,68 @@
-import React, {useState} from "react";
-import AddIcon from '@mui/icons-material/Add';
-import Fab from '@mui/material/Fab';
-import Zoom from '@mui/material/Zoom';
-function CreateArea(props){
-        
+import React, { useState } from "react";
+import AddIcon from "@material-ui/icons/Add";
+import Fab from "@material-ui/core/Fab";
+import Zoom from "@material-ui/core/Zoom";
 
-    function preD(e){
-        e.preventDefault();
-    }
-//const [title, setTitle] = useState("");
-//const [content, setContent] = useState("");
-            
-            const [note, setNote]=useState({ 
-                titile: "", 
-                content: ""
-            });
+function CreateArea(props) {
+  const [isExpanded, setExpanded] = useState(false);
 
+  const [note, setNote] = useState({
+    title: "",
+    content: ""
+  });
 
-        
-         function changeHandler(event){
-             
-        //     if (event.target.name==="title"){
-        //     setContent((prev) => {
-        //         return prev})
+  function handleChange(event) {
+    const { name, value } = event.target;
 
-        //      setTitle(event.target.value)
-                
-        // } else if (event.target.name==="content"){
-            
-        //     setTitle((prev) => {
-        //         return prev})
-        //     setContent(event.target.value)
-        // }
-        console.log(event.target);
-        const{ name, value} = event.target
-        setNote(prev => {return {
-            ...prev, 
+    setNote(prevNote => {
+      return {
+        ...prevNote,
         [name]: value
-    };
+      };
     });
-    }
+  }
 
-    const [isClicked, setIsClicked] = useState(false)
-    function isClickedF(){
-            setIsClicked(true)
-    }
+  function submitNote(event) {
+    props.onAdd(note);
+    setNote({
+      title: "",
+      content: ""
+    });
+    event.preventDefault();
+  }
 
+  function expand() {
+    setExpanded(true);
+  }
 
-    return(<div>
-    <form onSubmit={preD} className="create-note">
-        
-        {(isClicked) ? <input 
-        onChange={changeHandler} 
-        value={note.title} 
-        name="title" 
-        placeholder="Title" 
+  return (
+    <div>
+      <form className="create-note">
+        {isExpanded && (
+          <input
+            name="title"
+            onChange={handleChange}
+            value={note.title}
+            placeholder="Title"
+          />
+        )}
 
-        /> : null}
-        
-        <textarea 
-        onChange={changeHandler} 
-        onClick={isClickedF} 
-        value={note.content} 
-        name="content" 
-        placeholder="Take a note..." 
-        rows={(isClicked) ? "3" : "1"}
-
+        <textarea
+          name="content"
+          onClick={expand}
+          onChange={handleChange}
+          value={note.content}
+          placeholder="Take a note..."
+          rows={isExpanded ? 3 : 1}
         />
-        
-        <Zoom in={isClicked ? true: false} timeout={700}>
-            <Fab onClick={() =>{
-             var newNote = {title: note.title, content: note.content}
-             props.adNote(newNote)
-             setNote({ 
-                title: "", 
-                content: ""
-            });
-            setIsClicked(false);
-            }
-            }><AddIcon /></Fab>
+        <Zoom in={isExpanded}>
+          <Fab onClick={submitNote}>
+            <AddIcon />
+          </Fab>
         </Zoom>
-    </form>
-    
+      </form>
     </div>
-    )
+  );
 }
 
-
-export default CreateArea
+export default CreateArea;

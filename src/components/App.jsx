@@ -1,70 +1,44 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import Note from "./Note";
-import notes from "./notes";
-
-
-
-//import MyContext, {data} from "../context";
 import CreateArea from "./CreateArea";
 
-function App(){
-    const [myNotes, setMyNotes] = useState(notes);
+function App() {
+  const [notes, setNotes] = useState([]);
 
-function addNote(newNote){
-    console.log(notes)
-    console.log(newNote)
-    
-    setMyNotes ((prev) => {return([...prev, newNote])});
+  function addNote(newNote) {
+    setNotes(prevNotes => {
+      return [...prevNotes, newNote];
+    });
+  }
 
-    
-
-
-}
-
-
-
-function deleteNote(id){
-    console.log(id);
-    console.log(myNotes);
-    setMyNotes( myNotes.filter((note, index) => {
+  function deleteNote(id) {
+    setNotes(prevNotes => {
+      return prevNotes.filter((noteItem, index) => {
         return index !== id;
-    }))
-    
-    
-}
+      });
+    });
+  }
 
-    return(
-        <div>
-        <Header />
-        <CreateArea 
-        adNote={addNote} />
-
-        {/* <MyContext.Provider>
-        <Comp />
-
-        </MyContext.Provider> */}
-
- {myNotes.map((element, index) => {
-    return(
-            <Note  
+  return (
+    <div>
+      <Header />
+      <CreateArea onAdd={addNote} />
+      {notes.map((noteItem, index) => {
+        return (
+          <Note
             key={index}
             id={index}
-            
-            delNote={deleteNote}
-            {...element}
-            
-        />
-    )
-}) }
-
-        
-
-        <Footer />
-
-        </div>
-        )
+            title={noteItem.title}
+            content={noteItem.content}
+            onDelete={deleteNote}
+          />
+        );
+      })}
+      <Footer />
+    </div>
+  );
 }
 
 export default App;
